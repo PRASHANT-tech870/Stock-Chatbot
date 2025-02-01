@@ -1,39 +1,32 @@
-import datetime
-import calendar
+from datetime import datetime, timedelta
 
 def get_first_last_days():
-    # Get the current date
-    current_date = datetime.date.today()
-
-    # Calculate the first day of the month 5 months ago 
-    past_year, past_month = current_date.year, current_date.month
-    for _ in range(5):  # For 5 months
-        if past_month == 1:
-            past_month = 12
-            past_year -= 1
+    today = datetime.now()
+    
+    # Get current month's last day
+    current_month_last_day = today.replace(day=1)
+    current_month_last_day = (current_month_last_day.replace(month=current_month_last_day.month % 12 + 1, day=1) if current_month_last_day.month < 12 
+                             else current_month_last_day.replace(year=current_month_last_day.year + 1, month=1, day=1)) - timedelta(days=1)
+    
+    # Get 6 months ago first day (instead of just last month)
+    past_month_first_day = today.replace(day=1)
+    for _ in range(6):  # Go back 6 months
+        past_month_first_day = (past_month_first_day - timedelta(days=1)).replace(day=1)
+    
+    # Create consecutive month labels
+    months = []
+    date = past_month_first_day
+    while date <= current_month_last_day:
+        months.append(date.strftime('%Y-%m'))
+        # Move to next month
+        if date.month == 12:
+            date = date.replace(year=date.year + 1, month=1)
         else:
-            past_month -= 1
-    past_first_day = datetime.date(past_year, past_month, 1)
-
-    # Calculate the last day of the current month
-    last_day = calendar.monthrange(current_date.year, current_date.month)[1]
-    current_month_last_day = datetime.date(current_date.year, current_date.month, last_day)
-
-    # Format the dates to the desired format
-    past_month_first_day_str = past_first_day.strftime('%Y-%m-%d')
-    current_month_last_day_str = current_month_last_day.strftime('%Y-%m-%d')
-
-    # Generate list of year-month labels from 5 months ago to the next month
-    year_month_labels = []
-    year, month = past_year, past_month
-    for _ in range(7):  # Including the current month and the next month
-        year_month_labels.append(f"{year}-{str(month).zfill(2)}")
-        month += 1
-        if month > 12:
-            month = 1
-            year += 1
-
-    return past_month_first_day_str, current_month_last_day_str, year_month_labels
+            date = date.replace(month=date.month + 1)
+    
+    return (past_month_first_day.strftime('%Y-%m-%d'), 
+            current_month_last_day.strftime('%Y-%m-%d'),
+            months)
 
 
 '''
