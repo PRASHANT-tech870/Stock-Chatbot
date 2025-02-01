@@ -1,5 +1,26 @@
 # Stock-Chatbot
 
+A stock price prediction system that analyzes news articles to forecast monthly stock prices.
+
+## Live Demo
+Try it out: [Stock-Chatbot Live](https://stock-chatbot-rnyxvguyy6tvzyftwbzbaw.streamlit.app/)
+
+## Process Flow
+1. User enters a company name
+2. System fetches recent news articles using NewsAPI
+3. Articles are ranked based on relevance and content
+4. Historical stock data is retrieved for the past 6 months
+5. AI model analyzes news sentiment to predict next month's stock price
+6. Results are displayed with interactive graphs and detailed news analysis
+
+## Technologies Used
+- Frontend: Streamlit
+- News Data: NewsAPI
+- Stock Data: Polygon API
+- Machine Learning: Financial BERT Model
+- Data Processing: Python (Pandas, NumPy)
+- Visualization: Matplotlib
+
 <h2>Existing work</h2>
 
 <br>
